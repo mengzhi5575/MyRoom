@@ -3,11 +3,12 @@ package com.jaymz.example.room.base;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
-public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
+import com.trello.rxlifecycle3.components.support.RxAppCompatActivity;
+
+public abstract class BaseActivity<T extends ViewDataBinding> extends RxAppCompatActivity {
     protected T mDataBinding;
 
     @Override

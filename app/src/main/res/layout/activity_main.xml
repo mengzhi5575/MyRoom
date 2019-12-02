@@ -92,5 +92,6 @@
             app:layout_constraintEnd_toEndOf="@id/view_et_user_age"
             app:layout_constraintStart_toEndOf="@id/tv_insert_user"
             app:layout_constraintTop_toTopOf="@id/tv_insert_user" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,5 +1,7 @@
 package com.jaymz.example.room.db.repository;
 
+import android.database.Cursor;
+
 import com.jaymz.example.room.db.callback.DeleteUserCallback;
 import com.jaymz.example.room.db.callback.LoadUserCallback;
 import com.jaymz.example.room.db.callback.UpdateUserCallback;
@@ -18,9 +20,27 @@ public class UserRepository {
     private AppExecutors mAppExecutors;
     private User mCacheUser;
 
+    public static UserRepository getInstance() {
+        return Inner.instance;
+    }
+
+    private static class Inner {
+        private static UserRepository instance = new UserRepository(new AppExecutors(), UserDataSource.getInstance());
+    }
+
     public UserRepository(AppExecutors appExecutors, UserDataSource dataSource) {
         this.mAppExecutors = appExecutors;
         this.mDataSource = dataSource;
+    }
+
+    /**
+     * 供外部查询到数据
+     *
+     * @return
+     */
+    public Cursor queryUser() {
+        Cursor cursor = mDataSource.getUser();
+        return cursor;
     }
 
     /**
@@ -29,7 +49,7 @@ public class UserRepository {
      *
      * @param callback
      */
-    public void queryUser(final LoadUserCallback callback) {
+    public void queryUserInfo(final LoadUserCallback callback) {
         final WeakReference<LoadUserCallback> loadUserCallback = new WeakReference<>(callback);
         mAppExecutors.diskIO().execute(new Runnable() {
             @Override
@@ -57,6 +77,7 @@ public class UserRepository {
     /**
      * 向数据源中插入或者更新一条用户数据
      * 插入或者更新数据库数据不能在主线程中操作，所以调用线程池中的io线程
+     * onUserDelete
      *
      * @param userName
      * @param userAge
@@ -66,7 +87,16 @@ public class UserRepository {
         final WeakReference<UpdateUserCallback> updateUserCallback = new WeakReference<>(callback);
         //todo:当前缓存数据为null时,新建一个用户，否则更新当前缓存数据，通过保持ID相同的方式
         final User user = mCacheUser == null ?
-                new User(userName, userAge) : new User(mCacheUser.getId(), userName, userAge);
+                new User.Builder()
+                        .setFirst(true)
+                        .setUserName(userName)
+                        .setUserAge(userAge)
+                        .build() :
+                new User.Builder()
+                        .setUserId(mCacheUser.getId())
+                        .setUserName(userName)
+                        .setUserAge(userAge)
+                        .build();
         mAppExecutors.diskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -95,6 +125,7 @@ public class UserRepository {
             @Override
             public void run() {
                 mDataSource.deleteAllUser();
+                mCacheUser = null;
                 mAppExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {

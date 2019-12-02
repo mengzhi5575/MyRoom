@@ -1,3 +1,7 @@
 ext {
     roomVersion = '1.0.0-alpha5'
+    rxJavaVersion = '2.2.15'
+    rxAndroidVersion = '2.1.1'
+    rxLifecycleVersion = '3.1.0'
+    javaVersion = JavaVersion.VERSION_1_8
 }

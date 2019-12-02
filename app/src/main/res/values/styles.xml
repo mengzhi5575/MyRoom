@@ -20,7 +20,7 @@
         <item name="android:textColorHint">@color/color_default_gray</item>
         <item name="android:gravity">center</item>
         <item name="android:lines">1</item>
-        <item name="android:imeOptions">actionNext</item>
+        <item name="android:imeOptions">actionNext|flagNoExtractUi|flagNoFullscreen</item>
         <item name="android:inputType">text</item>
         <item name="android:background">@color/color_transparent</item>
     </style>
@@ -31,7 +31,7 @@
         <item name="android:textColorHint">@color/color_default_gray</item>
         <item name="android:gravity">center</item>
         <item name="android:lines">1</item>
-        <item name="android:imeOptions">actionDone</item>
+        <item name="android:imeOptions">actionDone|flagNoFullscreen|flagNoExtractUi</item>
         <item name="android:inputType">number</item>
         <item name="android:background">@color/color_transparent</item>
     </style>

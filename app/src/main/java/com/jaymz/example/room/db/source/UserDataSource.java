@@ -1,6 +1,8 @@
 package com.jaymz.example.room.db.source;
 
 
+import android.database.Cursor;
+
 import com.jaymz.example.room.db.room.User;
 import com.jaymz.example.room.db.room.UserDataBase;
 import com.jaymz.example.room.db.room.dao.UserDao;
@@ -30,6 +32,11 @@ public class UserDataSource implements DataSource {
         private static final UserDataSource instance = new UserDataSource();
     }
 
+    @Override
+    public Cursor getUser() {
+        return mUserDao.getUser();
+    }
+
     /**
      * 查询User数据库中的数据
      *
@@ -37,7 +44,12 @@ public class UserDataSource implements DataSource {
      */
     @Override
     public User getUserInfo() {
-        return mUserDao.getUser();
+        return mUserDao.getUserInfo();
+    }
+
+    @Override
+    public User getUserInfo(int userId) {
+        return mUserDao.getUserInfo(userId);
     }
 
     /**
@@ -46,13 +58,18 @@ public class UserDataSource implements DataSource {
      * @param user
      */
     @Override
-    public void insertOrUpdateUser(User user) {
-        mUserDao.insertUser(user);
+    public Long insertOrUpdateUser(User user) {
+        return mUserDao.insertUser(user);
     }
 
     @Override
-    public void deleteAllUser() {
-        mUserDao.deleteAllUsers();
+    public int deleteAllUser() {
+        return mUserDao.deleteAllUsers();
+    }
+
+    @Override
+    public int deleteIdUser(User user) {
+        return mUserDao.deleteIdUser(user);
     }
 
     /**

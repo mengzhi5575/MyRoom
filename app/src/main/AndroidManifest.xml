@@ -20,6 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:name=".provider.UserProvider"
+            android:authorities="com.jaymz.example.room.provider.UserProvider"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

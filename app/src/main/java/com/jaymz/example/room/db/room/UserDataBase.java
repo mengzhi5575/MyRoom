@@ -39,6 +39,7 @@ public abstract class UserDataBase extends RoomDatabase {
             if (INSTANCE == null) {
                 INSTANCE = Room.databaseBuilder(context, UserDataBase.class, "User.db")
                         .addMigrations(MIGRATION_1_2)
+                        .allowMainThreadQueries()
                         .build();
             }
         }

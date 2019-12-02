@@ -1,6 +1,9 @@
 package com.jaymz.example.room.db.room.dao;
 
+import android.database.Cursor;
+
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -13,10 +16,16 @@ import com.jaymz.example.room.db.room.User;
 @Dao
 public interface UserDao {
     @Query("SELECT * FROM user_info LIMIT 1")
-    User getUser();
+    Cursor getUser();
+
+    @Query("SELECT * FROM user_info LIMIT 1")
+    User getUserInfo();
+
+    @Query("SELECT * FROM user_info WHERE user_id >:userId")
+    User getUserInfo(int userId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertUser(User user);
+    Long insertUser(User user);
 
     @Query("UPDATE user_info SET user_name = :userName WHERE user_id = :userId")
     void updateUserName(String userName, int userId);
@@ -25,6 +34,9 @@ public interface UserDao {
     void updateUserAge(int userAge, int userId);
 
     @Query("DELETE FROM user_info")
-    void deleteAllUsers();
+    int deleteAllUsers();
+
+    @Delete
+    int deleteIdUser(User user);
 
 }

@@ -42,7 +42,7 @@ public class UserPresenter implements IPresenter {
      * 查询User缓存
      */
     public void queryUser() {
-        mUserRepository.queryUser(mLoadUserCallback);
+        mUserRepository.queryUserInfo(mLoadUserCallback);
     }
 
     /**
