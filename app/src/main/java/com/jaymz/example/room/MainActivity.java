@@ -2,12 +2,14 @@ package com.jaymz.example.room;
 
 import android.content.ContentValues;
 import android.database.ContentObserver;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.jaymz.example.room.base.BaseActivity;
 import com.jaymz.example.room.databinding.ActivityMainBinding;
@@ -15,6 +17,7 @@ import com.jaymz.example.room.db.room.User;
 import com.jaymz.example.room.mvp.presenter.UserRxPresenter;
 import com.jaymz.example.room.mvp.view.UserView;
 import com.jaymz.example.room.provider.config.UriConfig;
+import com.jaymz.example.room.utils.InputMethodUtils;
 import com.jaymz.example.room.utils.UserInfoCheckUtils;
 import com.jaymz.example.room.utils.UserProviderUtils;
 
@@ -28,7 +31,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements U
             Log.d(TAG, "accountObserver onChange selfChange: " + selfChange);
             super.onChange(selfChange);
             mPresenter.queryUser();
-            setDeleteBtnStatus();
         }
     };
 
@@ -73,10 +75,17 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements U
                     contentValues.put("user_name", userName);
                     contentValues.put("user_age", userAge);
                     mPresenter.insertOrUpdate(UriConfig.S_USER_TABLE_NAME, contentValues);
+                } else {
+                    Toast.makeText(this, getString(R.string.toast_tip_user_info_invalidate), Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.tv_delete_user:
                 mPresenter.deleteUser(UriConfig.S_USER_TABLE_NAME, null);
+                break;
+            case R.id.cl_main:
+                if (getCurrentSoftInputHeight() > 200) {
+                    InputMethodUtils.hideSoftInputMethod(this, getCurrentFocus());
+                }
                 break;
         }
     }
@@ -153,5 +162,20 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements U
             return true;
         }
         return false;
+    }
+
+    /**
+     * 得到当前软键盘的高度
+     *
+     * @return 软键盘的高度
+     */
+    public int getCurrentSoftInputHeight() {
+        final View decorView = getWindow().getDecorView();
+        Rect rect = new Rect();
+        decorView.getWindowVisibleDisplayFrame(rect);
+        // 获取屏幕的高度(包括状态栏，导航栏)
+        int screenHeight = decorView.getRootView().getHeight();
+        int keySoftHeight = screenHeight - rect.bottom;
+        return keySoftHeight;
     }
 }

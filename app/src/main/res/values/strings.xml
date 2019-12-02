@@ -2,4 +2,5 @@
     <string name="app_name">MyRoom</string>
     <string name="user_info_tip">用户信息</string>
     <string name="user_info">姓名: %s 年龄: %d</string>
+    <string name="toast_tip_user_info_invalidate">用户信息不合法</string>
 </resources>
