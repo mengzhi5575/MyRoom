@@ -13,9 +13,15 @@
             <corners android:radius="@dimen/corner_size_10" />
         </shape>
     </item>
-    <item>
+    <item android:state_enabled="true">
         <shape>
             <solid android:color="#1FD5F7" />
+            <corners android:radius="@dimen/corner_size_10" />
+        </shape>
+    </item>
+    <item android:state_enabled="false">
+        <shape>
+            <solid android:color="#999999" />
             <corners android:radius="@dimen/corner_size_10" />
         </shape>
     </item>

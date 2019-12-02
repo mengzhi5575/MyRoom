@@ -22,6 +22,14 @@ public class UserRxPresenter implements IPresenter {
         this.mUserView = userView;
     }
 
+    public User getCacheUser() {
+        return mCacheUser;
+    }
+
+    public void setCacheUser(User cacheUser) {
+        this.mCacheUser = cacheUser;
+    }
+
     /**
      * 插入或更新用户信息
      *
@@ -53,16 +61,17 @@ public class UserRxPresenter implements IPresenter {
                     @Override
                     public void accept(User user) throws Exception {
                         if (user != null) {
-                            String userName = user.getUserName();
-                            int userAge = user.getUserAge();
+                            setCacheUser(user);
                             mUserView.showUserInfo(user);
                         } else {
+                            setCacheUser(null);
                             mUserView.hideUserInfo();
                         }
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
+                        setCacheUser(null);
                         mUserView.hideUserInfo();
                         Log.e(TAG, "throwable: " + throwable.getCause());
                     }
